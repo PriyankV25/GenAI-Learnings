@@ -39,7 +39,7 @@ load_dotenv()
 
 import os
 import sys
-
+from langchain_groq import ChatGroq
 from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
 from langchain.tools import tool
 from langchain.messages import HumanMessage, ToolMessage
@@ -64,12 +64,16 @@ def get_text_length(text: str) -> int:
 # 2. Create LLM
 # -----------------------------
 
-llm = HuggingFaceEndpoint(
-    repo_id="deepseek-ai/DeepSeek-R1-0528",
-    huggingfacehub_api_token=os.getenv("HUGGINGFACEHUB_ACCESS_TOKEN"),
-)
+# llm = HuggingFaceEndpoint(
+#     repo_id="deepseek-ai/DeepSeek-R1-0528",
+#     huggingfacehub_api_token=os.getenv("HUGGINGFACEHUB_ACCESS_TOKEN"),
+# )
 
-model = ChatHuggingFace(llm=llm)
+model = ChatGroq(
+    model="openai/gpt-oss-20b",
+    temperature=0.7,
+)
+# ChatHuggingFace(llm=llm)
 
 # Give tool information to the LLM
 llm_with_tool = model.bind_tools([get_text_length])
